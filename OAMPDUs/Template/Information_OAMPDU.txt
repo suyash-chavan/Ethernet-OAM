@@ -1,0 +1,27 @@
+# This is OAMPDU that can be sent by OAM Administrator
+
+DA                              =                   {0X01,0X80,0Xc2,0X00,0X00,0X02}
+
+SA                              =                   {}
+
+Length/Type                     = 
+
+Subtype                         = 
+
+Code                            =
+
+Flags                           =
+
+Data                            =                   1   # Number of TLVs in OAMPDU except Local and Remote Info. TLVs
+                                                    
+                                                    # Information TLV Template
+                                                    
+                                                    Information_Type            =               
+                                                    Information_Length          =
+                                                    OAM_Version                 =
+                                                    Revision                    =
+                                                    State                       =
+                                                    OAM_Configuration           =
+                                                    OAMPDU_Configuration        =
+
+FCS                             = 
