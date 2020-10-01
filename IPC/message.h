@@ -3,7 +3,8 @@
 #define LBF_OAMI_request 3
 #define CTL_OAMI_request 4
 #define MCF_MA_DATA_request 5
-#define OAMPDU_INDICATION 6
+#define OAMPDU_indication 6
+#define OAMPDU_request 7
 
 struct _message{
 

@@ -24,7 +24,8 @@ void set_control_postbox()
 
 void post_control_postbox(struct _message message_post_control)
 {
-	msgsnd(msgid_control, &message_post_control, sizeof(message_post_control), 0);
+	printf("MSGSEND return: %d",(int)msgsnd(msgid_control, &message_post_control, sizeof(message_post_control), 0));
+	
 }
 
 ssize_t get_control_postbox()
@@ -32,7 +33,6 @@ ssize_t get_control_postbox()
     ssize_t x=(msgrcv(msgid_control, &message_get_control, sizeof(message_get_control), 0, 0));
     printf("MESSAGE RECEIVE SIZE: %d \n",(int)x);
 	return x;
-	
 }
 
 

@@ -791,26 +791,29 @@ void HANDLE_Information_OAMPDU()
     if (oampdu->payload.data.information_tlv.local_info.info_type == 0x01 && oampdu->payload.data.information_tlv.local_info.revision > peer.peer_info_revision)
     {
         set_peer_info();
+        remote_state_valid=TRUE;
         oampdu->payload.data.information_tlv.local_info.revision = peer.peer_info_revision;
     }
+    
+    controlState=TRANSMIT;
 
 }
 
 void HANDLE_Event_Notification_OAMPDU()
 {
-    message_get_control.mtype=OAMPDU_INDICATION;
+    message_get_control.mtype=OAMPDU_indication;
     send_message(message_get_control);
 }
 
 void HANDLE_Variable_Request_OAMPDU()
 {
-    message_get_control.mtype=OAMPDU_INDICATION;
+    message_get_control.mtype=OAMPDU_indication;
     send_message(message_get_control);
 }
 
 void HANDLE_Variable_Response_OAMPDU()
 {
-    message_get_control.mtype=OAMPDU_INDICATION;
+    message_get_control.mtype=OAMPDU_indication;
     send_message(message_get_control);
 }
 
@@ -840,6 +843,17 @@ void HANDLE_Loopback_Control_OAMPDU()
     SEND_INFORMATION_OAMPDU();
 }
 
+void send_mac_packet()
+{
+    struct _message message;
+
+    message.mtype = MCF_MA_DATA_request;
+    
+    send_message(message);
+    
+    _TRANSMIT(&message);
+}
+
 void _PROCESS()
 {
 
@@ -864,7 +878,17 @@ void _PROCESS()
         break;
 
     case Loopback_Control_OAMPDU:
-        HANDLE_Loopback_Control_OAMPDU();
+        if(message_get_control.mtype == OAMPDU_request)
+        {
+            printf("\nSENDING LOOPBACK REQUEST TO PEER DTE!!!\n");
+            message_get_control.mtype = CTL_OAMI_request;
+            _TRANSMIT(&message_get_control);
+            
+            send_mac_packet();          // Temp
+        }
+        else
+            HANDLE_Loopback_Control_OAMPDU();
+        controlState=WAIT_FOR_INPUT;
         break;
     }
 }

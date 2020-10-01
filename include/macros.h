@@ -23,7 +23,7 @@
 #define parser_postbox_size                         shared_memory->parser_postbox_size
 #define multiplexer_postbox_size                    shared_memory->multiplexer_postbox_size
 #define oam_client_postbox_size                     shared_memory->oam_client_postbox_size
-#define mac_client_postbox_size                        shared_memory->mac_client_postbox_size   
+#define mac_client_postbox_size                     shared_memory->mac_client_postbox_size   
 
 #define Information_OAMPDU 							0x00
 #define Event_Notification_OAMPDU 					0x01
