@@ -74,8 +74,8 @@ void SEND_INFORMATION_OAMPDU()
     */
     
     
-    OAMPDU *oampdu;
-    oampdu = (OAMPDU *) malloc(sizeof(OAMPDU));
+    PACKET *oampdu;
+    oampdu = (PACKET *) malloc(sizeof(PACKET));
     
     memset(oampdu,0,sizeof(oampdu));
 
@@ -83,22 +83,22 @@ void SEND_INFORMATION_OAMPDU()
         oampdu->DA[i] = Slow_Protocols_Multicast[i];
 
     for (int i = 0; i < 2; i++)
-        oampdu->LengthorType[i] = Slow_Protocols_Type[i];
+        oampdu->length[i] = Slow_Protocols_Type[i];
 
-    oampdu->subtype = OAM_subtype;
+    oampdu->payload.OAMPDU.subtype = OAM_subtype;
 
     for (int i = 0; i < 2; i++)
         oampdu->SA[i] = source_address[i];
 
-    oampdu->payload.flags = generate_flags();
-    oampdu->payload.code = Information_OAMPDU;
-    oampdu->payload.data.information_tlv.local_info.info_type = 0x01;
-    oampdu->payload.data.information_tlv.local_info.info_len = 0x10;
-    oampdu->payload.data.information_tlv.local_info.oam_version = local_oam_version; // Should be stored in Memory
-    oampdu->payload.data.information_tlv.local_info.revision = local_tlv_revision;  // Should be stored in Memory
-    oampdu->payload.data.information_tlv.local_info.state = get_state();
-    oampdu->payload.data.information_tlv.local_info.oam_config = get_oam_config();
-    oampdu->payload.data.information_tlv.local_info.oampdu_config = get_oampdu_config();
+    oampdu->payload.OAMPDU.flags = generate_flags();
+    oampdu->payload.OAMPDU.code = Information_OAMPDU;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.info_type = 0x01;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.info_len = 0x10;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_version = local_oam_version; // Should be stored in Memory
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.revision = local_tlv_revision;  // Should be stored in Memory
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.state = get_state();
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_config = get_oam_config();
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oampdu_config = get_oampdu_config();
     
     /*
         Nedd to also copy peer info...
@@ -305,8 +305,8 @@ void init_fault_timer()
     if(multiplexer_postbox_size<max_queue_depth)
     {
         printf("Multiplexer Queue Depth: %d\n",multiplexer_postbox_size);
-        OAMPDU *oampdu;
-        oampdu = (OAMPDU *) malloc(sizeof(OAMPDU));
+        PACKET *oampdu;
+        oampdu = (PACKET *) malloc(sizeof(PACKET));
         
         memset(oampdu,0,sizeof(*oampdu));
 
@@ -314,22 +314,22 @@ void init_fault_timer()
             oampdu->DA[i] = Slow_Protocols_Multicast[i];
 
         for (int i = 0; i < 2; i++)
-            oampdu->LengthorType[i] = Slow_Protocols_Type[i];
+            oampdu->length[i] = Slow_Protocols_Type[i];
 
-        oampdu->subtype = OAM_subtype;
+        oampdu->payload.OAMPDU.subtype = OAM_subtype;
 
         for (int i = 0; i < 2; i++)
             oampdu->SA[i] = source_address[i];
 
-        oampdu->payload.flags = generate_flags();
-        oampdu->payload.code = Information_OAMPDU;
-        oampdu->payload.data.information_tlv.local_info.info_type = 0x00;
+        oampdu->payload.OAMPDU.flags = generate_flags();
+        oampdu->payload.OAMPDU.code = Information_OAMPDU;
+        oampdu->payload.OAMPDU.data.information_tlv.local_info.info_type = 0x00;
 
         struct _message message;
 
         message.mtype = CTL_OAMI_request;
 
-        memcpy((OAMPDU*)message.data, oampdu, sizeof(*oampdu));
+        memcpy((PACKET*)message.data, oampdu, sizeof(*oampdu));
 
         _TRANSMIT(&message);
 
@@ -408,7 +408,7 @@ void _INIT_TRANSMIT()
 
 void _TX_OAMPDU(struct _message* message)
 {
-    DEBUG((OAMPDU*)message->data);
+    DEBUG((PACKET*)message->data);
     multiplexer_postbox_size++;
     send_message(*message);
 }
@@ -495,8 +495,8 @@ void _ACTIVE_SEND_LOCAL_PRE()
 {
     local_pdu = INFO;
 
-    OAMPDU *oampdu;
-    oampdu = (OAMPDU *) malloc(sizeof(OAMPDU));
+    PACKET *oampdu;
+    oampdu = (PACKET *) malloc(sizeof(PACKET));
     
     memset(oampdu,0,sizeof(oampdu));
 
@@ -504,22 +504,22 @@ void _ACTIVE_SEND_LOCAL_PRE()
         oampdu->DA[i] = Slow_Protocols_Multicast[i];
 
     for (int i = 0; i < 2; i++)
-        oampdu->LengthorType[i] = Slow_Protocols_Type[i];
+        oampdu->length[i] = Slow_Protocols_Type[i];
 
-    oampdu->subtype = OAM_subtype;
+    oampdu->payload.OAMPDU.subtype = OAM_subtype;
 
     for (int i = 0; i < 2; i++)
         oampdu->SA[i] = source_address[i];
 
-    oampdu->payload.flags = generate_flags();
-    oampdu->payload.code = Information_OAMPDU;
-    oampdu->payload.data.information_tlv.local_info.info_type = 0x01;
-    oampdu->payload.data.information_tlv.local_info.info_len = 0x10;
-    oampdu->payload.data.information_tlv.local_info.oam_version = local_oam_version; // Should be stored in Memory
-    oampdu->payload.data.information_tlv.local_info.revision = local_tlv_revision;  // Should be stored in Memory
-    oampdu->payload.data.information_tlv.local_info.state = get_state();
-    oampdu->payload.data.information_tlv.local_info.oam_config = get_oam_config();
-    oampdu->payload.data.information_tlv.local_info.oampdu_config = get_oampdu_config();
+    oampdu->payload.OAMPDU.flags = generate_flags();
+    oampdu->payload.OAMPDU.code = Information_OAMPDU;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.info_type = 0x01;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.info_len = 0x10;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_version = local_oam_version; // Should be stored in Memory
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.revision = local_tlv_revision;  // Should be stored in Memory
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.state = get_state();
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_config = get_oam_config();
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oampdu_config = get_oampdu_config();
 
     struct _message message;
 
@@ -682,11 +682,11 @@ void _DISCOVERY()
 
 void set_peer_info()
 {
-    OAMPDU* oampdu = (OAMPDU*)message_get_control.data;
+    PACKET* oampdu = (PACKET*)message_get_control.data;
 
-    peer.peer_oam_version = oampdu->payload.data.information_tlv.local_info.oam_version;
+    peer.peer_oam_version = oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_version;
 
-    unsigned char peer_state = oampdu->payload.data.information_tlv.local_info.state;
+    unsigned char peer_state = oampdu->payload.OAMPDU.data.information_tlv.local_info.state;
 
     switch (peer_state & 3)
     {
@@ -713,7 +713,7 @@ void set_peer_info()
         peer.peer_mux_action = mux_DISCARD;
     }
 
-    unsigned char peer_oam_config = oampdu->payload.data.information_tlv.local_info.oam_config;
+    unsigned char peer_oam_config = oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_config;
 
     switch (bitcheck(peer_oam_config, 0))
     {
@@ -772,7 +772,7 @@ void set_peer_info()
         break;
     }
 
-    unsigned short peer_oampdu_config = oampdu->payload.data.information_tlv.local_info.oampdu_config;
+    unsigned short peer_oampdu_config = oampdu->payload.OAMPDU.data.information_tlv.local_info.oampdu_config;
 
     for (int i = 0; i < 11; i++)
     {
@@ -786,13 +786,13 @@ void set_peer_info()
 
 void HANDLE_Information_OAMPDU()
 {
-    OAMPDU* oampdu = (OAMPDU*)message_get_control.data;
+    PACKET* oampdu = (PACKET*)message_get_control.data;
     
-    if (oampdu->payload.data.information_tlv.local_info.info_type == 0x01 && oampdu->payload.data.information_tlv.local_info.revision > peer.peer_info_revision)
+    if (oampdu->payload.OAMPDU.data.information_tlv.local_info.info_type == 0x01 && oampdu->payload.OAMPDU.data.information_tlv.local_info.revision > peer.peer_info_revision)
     {
         set_peer_info();
         remote_state_valid=TRUE;
-        oampdu->payload.data.information_tlv.local_info.revision = peer.peer_info_revision;
+        oampdu->payload.OAMPDU.data.information_tlv.local_info.revision = peer.peer_info_revision;
     }
     
     controlState=TRANSMIT;
@@ -857,9 +857,9 @@ void send_mac_packet()
 void _PROCESS()
 {
 
-    OAMPDU* oampdu = (OAMPDU*)message_get_control.data;
+    PACKET* oampdu = (PACKET*)message_get_control.data;
 
-    switch (oampdu->payload.code)
+    switch (oampdu->payload.OAMPDU.code)
     {
     case Information_OAMPDU:
         HANDLE_Information_OAMPDU();

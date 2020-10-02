@@ -9,7 +9,7 @@ void _WAIT_FOR_RX()
     
     printf("Received through Socket...\n");
     
-    DEBUG((OAMPDU*)current.data);
+    DEBUG((PACKET*)current.data);
 
     parserState = PARSE;
 }
@@ -17,8 +17,8 @@ void _WAIT_FOR_RX()
 
 void _PARSE()
 {
-    OAMPDU *oampdu;
-    oampdu = (OAMPDU*)(current.data);
+    PACKET *oampdu;
+    oampdu = (PACKET*)(current.data);
 
     if (rxOk && RxOAMPDU)
         parserState = RX_OAMPDU;

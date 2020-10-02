@@ -144,8 +144,8 @@ void loopback()
 {
     struct _message message;    
     
-    OAMPDU *oampdu;
-    oampdu = (OAMPDU *) malloc(sizeof(OAMPDU));
+    PACKET *oampdu;
+    oampdu = (PACKET *) malloc(sizeof(PACKET));
     
     memset(oampdu,0,sizeof(oampdu));
 
@@ -153,24 +153,24 @@ void loopback()
         oampdu->DA[i] = Slow_Protocols_Multicast[i];
 
     for (int i = 0; i < 2; i++)
-        oampdu->LengthorType[i] = Slow_Protocols_Type[i];
+        oampdu->length[i] = Slow_Protocols_Type[i];
 
-    oampdu->subtype = OAM_subtype;
+    oampdu->payload.OAMPDU.subtype = OAM_subtype;
 
     for (int i = 0; i < 2; i++)
         oampdu->SA[i] = source_address[i];
 
-    oampdu->payload.flags = generate_flags();
-    oampdu->payload.code = Loopback_Control_OAMPDU;
-    oampdu->payload.data.information_tlv.local_info.info_type = 0x01;
-    oampdu->payload.data.information_tlv.local_info.info_len = 0x10;
-    oampdu->payload.data.information_tlv.local_info.oam_version = local_oam_version; // Should be stored in Memory
-    oampdu->payload.data.information_tlv.local_info.revision = local_tlv_revision;  // Should be stored in Memory
-    oampdu->payload.data.information_tlv.local_info.state = get_state();
-    oampdu->payload.data.information_tlv.local_info.oam_config = get_oam_config();
-    oampdu->payload.data.information_tlv.local_info.oampdu_config = get_oampdu_config();
+    oampdu->payload.OAMPDU.flags = generate_flags();
+    oampdu->payload.OAMPDU.code = Loopback_Control_OAMPDU;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.info_type = 0x01;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.info_len = 0x10;
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_version = local_oam_version; // Should be stored in Memory
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.revision = local_tlv_revision;  // Should be stored in Memory
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.state = get_state();
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_config = get_oam_config();
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.oampdu_config = get_oampdu_config();
     
-    oampdu->payload.data.loopback_control.remote_loopback_command = 0x01;
+    oampdu->payload.OAMPDU.data.loopback_control.remote_loopback_command = 0x01;
 
     message.mtype = OAMPDU_request;
     

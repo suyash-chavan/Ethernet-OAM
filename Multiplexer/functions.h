@@ -7,17 +7,16 @@ void _WAIT_FOR_TX()
     get_multiplexer_postbox();
     multiplexer_postbox_size--;
 
-    OAMPDU *oampdu=(OAMPDU*)message_get_multiplexer.data;
+    PACKET *packet=(PACKET*)message_get_multiplexer.data;
 
+    printf("Received Message Type: %d\n",message_get_multiplexer.mtype);
+    
     if (message_get_multiplexer.mtype == CTL_OAMI_request)
     {
-        printf("Received Message Type: CTL_OAMI_request\n");
         multiplexerState = TX_FRAME;
     }
     else if (message_get_multiplexer.mtype != CTL_OAMI_request && ((message_get_multiplexer.mtype == MCF_MA_DATA_request && local_mux_action == mux_FWD) || message_get_multiplexer.mtype != LBF_OAMI_request))
     {
-        
-        printf("Received Message Type: NON-CTL_OAMI_request\n");
         multiplexerState = CHECK_PHY_LINK;
     }
 
@@ -30,7 +29,7 @@ void _TX_FRAME()
     printf("Sending Message through Socket...\n");
     printf("-----------------------------------------\n\n");
     
-    DEBUG((OAMPDU*)message_get_multiplexer.data);
+    DEBUG((PACKET*)message_get_multiplexer.data);
     
     send_socket(message_get_multiplexer.data);
 

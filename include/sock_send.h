@@ -1,5 +1,5 @@
-#define his_ip "127.0.0.1"
-#define his_port "8090"
+#define his_ip "172.16.75.129"
+#define his_port "8080"
 
 #define max_socket_retries 4
 

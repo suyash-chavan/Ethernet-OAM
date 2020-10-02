@@ -1,6 +1,6 @@
-void print_Remote_Loopback_Control_OAMPDU(OAMPDU *packet)
+void print_Remote_Loopback_Control_OAMPDU(PACKET *packet)
 {
-    printf("\n\t\t\t\tOAM Remote Loopback Command:\t\t%02x",packet->payload.data.loopback_control.remote_loopback_command);
+    printf("\n\t\t\t\tOAM Remote Loopback Command:\t\t%02x",packet->payload.OAMPDU.data.loopback_control.remote_loopback_command);
 }
 
 void print_variable_container(struct variable_container vc)
@@ -11,12 +11,12 @@ void print_variable_container(struct variable_container vc)
     printf("\n\t\t\t\tVariable Value:\t\t%04x",vc.value);             // How to print?
 }
 
-void print_Variable_Response_OAMPDU(OAMPDU *packet)
+void print_Variable_Response_OAMPDU(PACKET *packet)
 {
-    for(int i=0;i<sizeof(packet->payload.data.variable_response.variable_containers)/sizeof(struct variable_container);i++)
+    for(int i=0;i<sizeof(packet->payload.OAMPDU.data.variable_response.variable_containers)/sizeof(struct variable_container);i++)
     {
         printf("\n\nVariable Descriptor %d:",i+1);
-        print_variable_container(packet->payload.data.variable_response.variable_containers[i]);
+        print_variable_container(packet->payload.OAMPDU.data.variable_response.variable_containers[i]);
     }
 }
 
@@ -26,12 +26,12 @@ void print_variable_descriptor(struct variable_descriptor vd)
     printf("\n\t\t\t\tVariable Leaf:\t\t%04x",vd.variable_leaf);
 }
 
-void print_Variable_Request_OAMPDU(OAMPDU *packet)
+void print_Variable_Request_OAMPDU(PACKET *packet)
 {
-    for(int i=0;i<sizeof(packet->payload.data.variable_request.variable_descriptors)/sizeof(struct variable_descriptor);i++)
+    for(int i=0;i<sizeof(packet->payload.OAMPDU.data.variable_request.variable_descriptors)/sizeof(struct variable_descriptor);i++)
     {
         printf("\n\nVariable Descriptor %d:",i+1);
-        print_variable_descriptor(packet->payload.data.variable_request.variable_descriptors[i]);
+        print_variable_descriptor(packet->payload.OAMPDU.data.variable_request.variable_descriptors[i]);
     }
 }
 
@@ -47,14 +47,14 @@ void print_link_event_tlv(struct link_event_tlv tlv)
     printf("\n\t\t\t\tEvent Running Total:\t\t%ul",tlv.event_running_total);
 }
 
-void print_Event_Notification_OAMPDU(OAMPDU *packet)
+void print_Event_Notification_OAMPDU(PACKET *packet)
 {
-    printf("\n\n\tSequence Number:\t\t\t%hu",packet->payload.data.event_notification_tlv.sequence_no);
+    printf("\n\n\tSequence Number:\t\t\t%hu",packet->payload.OAMPDU.data.event_notification_tlv.sequence_no);
     
-    for(int i=0;i<sizeof(packet->payload.data.event_notification_tlv.link_event_tlvs)/sizeof(struct link_event_tlv);i++)
+    for(int i=0;i<sizeof(packet->payload.OAMPDU.data.event_notification_tlv.link_event_tlvs)/sizeof(struct link_event_tlv);i++)
     {
         printf("\n\nEvent Notification TLV %d:",i+1);
-        print_link_event_tlv(packet->payload.data.event_notification_tlv.link_event_tlvs[i]);
+        print_link_event_tlv(packet->payload.OAMPDU.data.event_notification_tlv.link_event_tlvs[i]);
     }
 }
 
@@ -69,22 +69,22 @@ void print_info_tlv(struct info_tlv tlv)
     printf("\n\t\t\t\tOAMPDU Configuration:\t\t%02x",tlv.oampdu_config);
 } 
 
-void print_Information_OAMPDU(OAMPDU *packet)
+void print_Information_OAMPDU(PACKET *packet)
 {
     printf("\n\n\tLocal Information TLV:");
-    print_info_tlv(packet->payload.data.information_tlv.local_info);
+    print_info_tlv(packet->payload.OAMPDU.data.information_tlv.local_info);
     
     printf("\n\n\tRemote Information TLV:");
-    print_info_tlv(packet->payload.data.information_tlv.remote_info);
+    print_info_tlv(packet->payload.OAMPDU.data.information_tlv.remote_info);
     
-    for(int i=0;i<sizeof(packet->payload.data.information_tlv.other_info_tlv)/sizeof(struct info_tlv);i++)
+    for(int i=0;i<sizeof(packet->payload.OAMPDU.data.information_tlv.other_info_tlv)/sizeof(struct info_tlv);i++)
     {
         printf("\n\n\tOther Information TLV %d:",i+1);
-        print_info_tlv(packet->payload.data.information_tlv.other_info_tlv[i]);
+        print_info_tlv(packet->payload.OAMPDU.data.information_tlv.other_info_tlv[i]);
     }
 }
 
-void print(OAMPDU *packet)
+void print(PACKET *packet)
 {
     printf("\n------------------------------------------------------------------------------------------\n");  
     
@@ -99,20 +99,21 @@ void print(OAMPDU *packet)
         printf(" 0x%02x ",packet->SA[i]);
     printf(" ]\n");
     
+    
     printf("\n\tFlags:");
     for(;;)
     {
-        unsigned int flags=packet->payload.flags;
+        unsigned int flags=packet->payload.OAMPDU.flags;
         
         for(int i=15;i>=0;i--,flags>>=1)
             printf("\n\t\t\t\tBit %d:\t%d",i,flags&1);
         break;
     }
     
-    printf("\n\n\tCode:\t\t\t%02x",packet->payload.code);
+    printf("\n\n\tCode:\t\t\t%02x",packet->payload.OAMPDU.code);
     
     
-    switch(packet->payload.code)
+    switch(packet->payload.OAMPDU.code)
     {
         case 0:
             print_Information_OAMPDU(packet);
@@ -145,9 +146,9 @@ void print(OAMPDU *packet)
 }
 
 
-void DEBUG(OAMPDU *packet)
+void DEBUG(PACKET *packet)
 {
-    //OAMPDU *packet=(OAMPDU *) buf;
+    //PACKET *packet=(OAMPDU *) buf;
     
     #ifdef DEBUG_PRINT
     print(packet);

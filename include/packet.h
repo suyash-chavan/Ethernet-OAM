@@ -79,18 +79,27 @@ union Data{
     } loopback_control;
 };
 
-/* OAMPDU defination */
-typedef struct OAMPDU{
-    unsigned char DA[6];
-    unsigned char LengthorType[2];
+struct _oampdu{
     unsigned char subtype;
+    unsigned int flags;
+	unsigned char code;
+	union Data data;
+};
+
+struct _mac{
+    char* data;
+};
+
+union _payload{
+    struct _oampdu OAMPDU;
+    struct _mac MAC;    
+};
+
+/* OAMPDU defination */
+typedef struct _packet{
+    unsigned char DA[6];
+    unsigned char length[2];
 	unsigned char SA[6];
-	
-	struct _payload{
-		unsigned int flags;
-		unsigned char code;
-		union Data data; 
-	} payload;
-	
+	union _payload payload;
 	unsigned int fcs;
-} OAMPDU;
+} PACKET;
