@@ -28,7 +28,7 @@ void send_message(struct _message message)
 		    
 		case OAMPDU_request:
 		    post_control_postbox(message);
-		    break;		    
+		    break;	    
 
 	}
 

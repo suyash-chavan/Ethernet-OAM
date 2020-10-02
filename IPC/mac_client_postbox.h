@@ -26,9 +26,10 @@ void post_mac_client_postbox(struct _message message_post_mac_client)
 {
 	msgsnd(msgid_mac_client, &message_post_mac_client, sizeof(message_post_mac_client), 0);
 }
-
-void get_mac_client_postbox()
+ssize_t get_mac_client_postbox()
 {
-	msgrcv(msgid_mac_client, &message_get_mac_client, sizeof(message_get_mac_client), 0, 0);
+    ssize_t x=(msgrcv(msgid_mac_client, &message_get_mac_client, sizeof(message_get_mac_client), 0, 0));
+    printf("MESSAGE RECEIVE SIZE: %d \n",(int)x);
+	return x;
 }
 

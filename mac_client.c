@@ -16,6 +16,7 @@
 #include "include/packet.h"
 #include "include/utility.h"
 #include "Init/init.h"
+#include "Control/peer.h"
 #include "Init/access_memory.h"
 
 /*
@@ -30,26 +31,15 @@
 #include "IPC/oam_client_postbox.h"
 #include "IPC/send_handler.h"
 
-
-struct _shared_memory *shared_memory;
-
-#include "include/macros.h"
-#include "Client/functions.h"
+#include "MAC_Client/functions.h"
 
 int main()
 {
-    // Initiating Shared Memory
-    get_init();
-
-    // Pointer to Shared Memory
-    shared_memory = (struct _shared_memory *) ptr;
-
-    // Setting Up Message Queues to other Modules
-    set_control_postbox();
-    set_oam_client_postbox();
-	    
-    // Starting State Machine
+    set_multiplexer_postbox();
+    set_mac_client_postbox();
+    
     interface();
+    
 
     return 0;
 

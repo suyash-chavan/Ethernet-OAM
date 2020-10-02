@@ -2,5 +2,6 @@ gcc multiplexer.c -o multiplexer -pthread -lrt -g
 gcc control.c -o control -pthread -lrt -g
 gcc parser.c -o parser -pthread -lrt -g
 gcc init.c -o init -pthread -lrt -g
-gcc client.c -o client -pthread -lrt -g
+gcc oam_client.c -o oam_client -pthread -lrt -g
+gcc mac_client.c -o mac_client -pthread -lrt -g
 ./init
