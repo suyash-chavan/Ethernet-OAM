@@ -30,6 +30,8 @@ int pdu_cnt = 10; // For Debugging in Future
 #define pdu_timer_interval 1
 #define fault_timer_interval 1
 
+unsigned short local_info_revision=1;
+
 /*
     Declaration Functions.
 */
@@ -99,6 +101,7 @@ void SEND_INFORMATION_OAMPDU()
     oampdu->payload.OAMPDU.data.information_tlv.local_info.state = get_state();
     oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_config = get_oam_config();
     oampdu->payload.OAMPDU.data.information_tlv.local_info.oampdu_config = get_oampdu_config();
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.revision = local_info_revision;
     
     /*
         Nedd to also copy peer info...
@@ -884,7 +887,7 @@ void _PROCESS()
             message_get_control.mtype = CTL_OAMI_request;
             _TRANSMIT(&message_get_control);
             
-            send_mac_packet();          // Temp
+            send_mac_packet();
         }
         else
             HANDLE_Loopback_Control_OAMPDU();
@@ -911,6 +914,7 @@ void control()
     pdu_timer_State = OFF;
     fault_timer_State = OFF;
     Loopback_Control_OAMPDU_Sent = FALSE;
+    peer.peer_info_revision=0;
 
     _INIT_TRANSMIT();
 
