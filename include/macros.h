@@ -1,6 +1,6 @@
 #define rxOk (reception_status == receiveOK)
 #define valid_pdu_req ((local_pdu != RX_INFO && pdu_req == NORMAL && pdu_cnt != 0) || (local_pdu == ANY && pdu_req == CRITICAL))
-#define RxOAMPDU (!strcmp(oampdu->DA,Slow_Protocols_Multicast) && !strcmp(oampdu->length,Slow_Protocols_Type) && oampdu->payload.OAMPDU.subtype == OAM_subtype)
+#define RxOAMPDU (!memcmp(oampdu->DA,Slow_Protocols_Multicast,6) && !memcmp(oampdu->length,Slow_Protocols_Type,2) && oampdu->payload.OAMPDU.subtype == OAM_subtype)
 
 #define BEGIN                                       shared_memory->BEGIN
 #define local_critical_event                        shared_memory->local_critical_event

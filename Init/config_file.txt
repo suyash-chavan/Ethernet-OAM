@@ -27,7 +27,7 @@ local_link_status                   =               OK
     
 local_oam_enable                    =               ENABLE
     
-local_oam_mode                      =                PASSIVE
+local_oam_mode                      =               ACTIVE
     
 local_par_action                    =                FWD
     
