@@ -557,8 +557,11 @@ void _ACTIVE_SEND_LOCAL_POST()
 void _PASSIVE_WAIT_PRE()
 {
     local_pdu = RX_INFO;
-
-    controlState = WAIT_FOR_INPUT;
+    
+    if(remote_state_valid==TRUE)
+        discoveryState=TRUE;
+    else
+        controlState = WAIT_FOR_INPUT;
 }
 
 void _PASSIVE_WAIT_POST()
