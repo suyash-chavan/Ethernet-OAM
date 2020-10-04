@@ -795,7 +795,7 @@ void HANDLE_Information_OAMPDU()
 {
     PACKET* oampdu = (PACKET*)message_get_control.data;
     
-    if (oampdu->payload.OAMPDU.data.information_tlv.local_info.info_type == 0x01 && oampdu->payload.OAMPDU.data.information_tlv.local_info.revision > peer.peer_info_revision)
+    if (oampdu->payload.OAMPDU.data.information_tlv.local_info.info_type == 0x01 /*&& oampdu->payload.OAMPDU.data.information_tlv.local_info.revision > peer.peer_info_revision*/)
     {
         set_peer_info();
         remote_state_valid=TRUE;
