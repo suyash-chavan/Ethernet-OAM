@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define FILENAME "Init/config_file.txt"
+#define FILENAME "../config_file.txt"
 
 int set_var(char *var_name, char *var_value, struct _shared_memory* shared_memory)
 {
