@@ -1,6 +1,5 @@
-#define his_ip "172.16.75.133"
 #define his_port "8080"
-
+#include "../../his_ip.h"
 #define max_socket_retries 4
 
 int send_socket(char *send_buf)
