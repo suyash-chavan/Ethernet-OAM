@@ -327,6 +327,8 @@ void init_fault_timer()
         oampdu->payload.OAMPDU.flags = generate_flags();
         oampdu->payload.OAMPDU.code = Information_OAMPDU;
         oampdu->payload.OAMPDU.data.information_tlv.local_info.info_type = 0x00;
+        
+        oampdu->payload.OAMPDU.data.information_tlv.local_info.revision = local_info_revision;
 
         struct _message message;
 
@@ -523,6 +525,8 @@ void _ACTIVE_SEND_LOCAL_PRE()
     oampdu->payload.OAMPDU.data.information_tlv.local_info.state = get_state();
     oampdu->payload.OAMPDU.data.information_tlv.local_info.oam_config = get_oam_config();
     oampdu->payload.OAMPDU.data.information_tlv.local_info.oampdu_config = get_oampdu_config();
+    
+    oampdu->payload.OAMPDU.data.information_tlv.local_info.revision = local_info_revision;
 
     struct _message message;
 
