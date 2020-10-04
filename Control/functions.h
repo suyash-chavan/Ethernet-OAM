@@ -846,17 +846,6 @@ void HANDLE_Loopback_Control_OAMPDU()
     SEND_INFORMATION_OAMPDU();
 }
 
-void send_mac_packet()
-{
-    struct _message message;
-
-    message.mtype = MCF_MA_DATA_request;
-    
-    send_message(message);
-    
-    _TRANSMIT(&message);
-}
-
 void _PROCESS()
 {
 
@@ -886,8 +875,6 @@ void _PROCESS()
             printf("\nSENDING LOOPBACK REQUEST TO PEER DTE!!!\n");
             message_get_control.mtype = CTL_OAMI_request;
             _TRANSMIT(&message_get_control);
-            
-            send_mac_packet();
         }
         else
             HANDLE_Loopback_Control_OAMPDU();

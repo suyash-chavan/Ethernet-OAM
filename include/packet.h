@@ -87,7 +87,7 @@ struct _oampdu{
 };
 
 struct _mac{
-    char* data;
+    char data[1500];
 };
 
 union _payload{

@@ -9,10 +9,9 @@ void get_input()
 
 void get_mac_frames()
 {
-    while((int)get_mac_client_postbox()!=-1)
-    {
-        printf("\nReceived Mac Frame with Data: %s\n",((PACKET*)message_get_mac_client.data)->payload.MAC.data);
-    }
+    get_mac_client_postbox();
+    PACKET* mac_frame=(PACKET*)message_get_mac_client.data;
+    printf("\nReceived Mac Frame with Data: %s\n",mac_frame->payload.MAC.data);
 }
 
 void transmit_frame()
@@ -34,10 +33,9 @@ void transmit_frame()
 
     for (int i = 0; i < 2; i++)
         frame->SA[i] = source_address[i];
-    
-    frame->payload.MAC.data=(char*)malloc(strlen(command)+2);
-    
-    memcpy(frame->payload.MAC.data,command,sizeof(*command));
+    printf("Command is: %s",command);
+    memcpy(frame->payload.MAC.data,command,strlen(command));
+    printf("Sending this: %s\n",frame->payload.MAC.data);
 
     memcpy(message.data, (char*)frame,sizeof(*frame));
     
