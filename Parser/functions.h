@@ -19,6 +19,8 @@ void _PARSE()
 {
     PACKET *oampdu;
     oampdu = (PACKET*)(current.data);
+    
+    printf("rxOK: %d\t\tRxOAMPDU: %d\n",rxOk,RxOAMPDU);
 
     if (rxOk && RxOAMPDU)
         parserState = RX_OAMPDU;
