@@ -19,6 +19,10 @@ void _WAIT_FOR_TX()
     {
         multiplexerState = CHECK_PHY_LINK;
     }
+    else
+    {
+        printf("Received Invalid Packet!!!\n");
+    }
 
 }
 
