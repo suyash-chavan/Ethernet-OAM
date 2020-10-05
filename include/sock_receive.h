@@ -54,6 +54,8 @@ void receive_socket(char* receive_buf)
 	peer_addr_len = sizeof(struct sockaddr_storage);
 	nread = recvfrom(sfd, receive_buf, OAMPDU_MAX, 0,
 	                 (struct sockaddr *) &peer_addr, &peer_addr_len);
+	                 
+	printf("***NREAD: %d\n",(int)nread);
 	if (nread == -1)
 		return ;            /* Ignore failed request */
 
