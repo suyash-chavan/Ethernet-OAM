@@ -15,7 +15,7 @@ void _WAIT_FOR_TX()
     {
         multiplexerState = TX_FRAME;
     }
-    else if (message_get_multiplexer.mtype != CTL_OAMI_request && ((message_get_multiplexer.mtype == MCF_MA_DATA_request && local_mux_action == mux_FWD) || message_get_multiplexer.mtype != LBF_OAMI_request))
+    else if (message_get_multiplexer.mtype != CTL_OAMI_request && ((message_get_multiplexer.mtype == MCF_MA_DATA_request && local_mux_action == mux_FWD) || message_get_multiplexer.mtype == LBF_OAMI_request))
     {
         multiplexerState = CHECK_PHY_LINK;
     }
