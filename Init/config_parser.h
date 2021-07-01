@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define FILENAME "../config_file.txt"
+#define FILENAME "./config_file.txt"
 
 int set_var(char *var_name, char *var_value, struct _shared_memory* shared_memory)
 {
@@ -288,13 +288,13 @@ int set_var(char *var_name, char *var_value, struct _shared_memory* shared_memor
 int config_parser(struct _shared_memory* shared_memory)
 {
     shared_memory->parser_postbox_size=0;
-  
+
     shared_memory->multiplexer_postbox_size=0;
-  
+
     shared_memory->oam_client_postbox_size=0;
-  
+
     shared_memory->mac_client_postbox_size=0;
-  
+
     shared_memory->control_postbox_size=0;
 
     /* Open the file for reading */

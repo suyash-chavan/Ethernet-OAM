@@ -1,0 +1,36 @@
+#This File is to Configure the DTE at Startup
+
+
+BEGIN                               =               TRUE
+
+local_critical_event                =               FALSE
+
+local_dying_gasp                    =               FALSE
+
+local_lost_link_timer_done          =               FALSE
+
+local_mux_action                    =               FWD    
+
+local_satisfied                     =               TRUE
+
+local_stable                        =               TRUE
+
+remote_stable                       =               TRUE
+
+remote_state_valid                  =               TRUE
+
+local_unidirectional                =               TRUE
+                                
+reception_status                    =               receiveOK
+    
+local_link_status                   =               OK
+    
+local_oam_enable                    =               ENABLE
+    
+local_oam_mode                      =                ACTIVE
+    
+local_par_action                    =                FWD
+    
+local_pdu                           =                RX_INFO
+    
+pdu_req                             =                NORMAL
